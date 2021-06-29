@@ -30,7 +30,7 @@ from Cython.Distutils import build_ext
 #if 'setuptools.extension' in sys.modules:
 #    m = sys.modules['setuptools.extension']
 #    m.Extension.__dict__ = m._Extension.__dict__
-    
+
 import glob
 libgame = Extension("gambit.lib.libgambit",
                     sources=[ "gambit/lib/libgambit.pyx" ] +
@@ -44,7 +44,9 @@ libgame = Extension("gambit.lib.libgambit",
                               "../tools/logit/nfglogit.cc",
                               "../tools/logit/efglogit.cc" ],
                     language="c++",
-                    include_dirs=[ "../..", "../../library/include", ".." ] )
+                    include_dirs=[ "../..", "../../library/include", ".." ],
+                    extra_compile_args=["-stdlib=libc++", '-mmacosx-version-min=10.7'])
+ 
 
 setup(name="gambit",
       version="16.0.1",
