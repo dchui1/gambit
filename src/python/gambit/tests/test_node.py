@@ -1,17 +1,17 @@
 import gambit
 from nose.tools import assert_raises
 from gambit.lib.error import MismatchError, UndefinedOperationError
+import unittest
 
-
-class TestGambitNode(object):
+class TestGambitNode(unittest.TestCase):
     def setUp(self):
         self.game = gambit.Game.new_tree()
         self.extensive_game = gambit.Game.read_game("test_games/basic_extensive_game.efg")
-        
+
     def tearDown(self):
         del self.game
         del self.extensive_game
-        
+
     def test_get_infoset(self):
         "Test to ensure that we can retrieve an infoset for a given node"
         assert self.extensive_game.root.infoset != None
@@ -31,7 +31,7 @@ class TestGambitNode(object):
     def test_get_game(self):
         "Test to ensure that we can retrieve the game object from a given node"
         assert self.extensive_game == self.extensive_game.root.game
-        
+
     def test_get_parent(self):
         "Test to ensure that we can retrieve a parent node for a given node"
         assert self.extensive_game.root.children[0].parent == self.extensive_game.root
@@ -41,7 +41,7 @@ class TestGambitNode(object):
         "Test to ensure that we can retrieve the prior action for a given node"
         assert self.extensive_game.root.children[0].prior_action == self.extensive_game.root.infoset.actions[0]
         assert self.extensive_game.root.prior_action == None
-        
+
     def test_get_prior_sibling(self):
         "Test to ensure that we can retrieve a prior sibling of a given node"
         assert self.extensive_game.root.children[1].prior_sibling == self.extensive_game.root.children[0]
@@ -76,9 +76,9 @@ class TestGambitNode(object):
 
     def test_append_move_error_player_actions(self):
         "Test to ensure there are actions when appending with a player"
-        assert_raises(UndefinedOperationError, self.extensive_game.root.append_move, 
+        assert_raises(UndefinedOperationError, self.extensive_game.root.append_move,
                         self.extensive_game.players[0])
-        assert_raises(UndefinedOperationError, self.extensive_game.root.append_move, 
+        assert_raises(UndefinedOperationError, self.extensive_game.root.append_move,
                         self.extensive_game.players[0], 0)
 
     def test_append_move_error_player_mismatch(self):
@@ -88,7 +88,7 @@ class TestGambitNode(object):
 
     def test_append_move_error_infoset_actions(self):
         "Test to ensure there are no actions when appending with an infoset"
-        assert_raises(UndefinedOperationError, self.extensive_game.root.append_move, 
+        assert_raises(UndefinedOperationError, self.extensive_game.root.append_move,
                         self.extensive_game.players[0].infosets[0], 1)
 
     def test_append_move_error_infoset_mismatch(self):
@@ -98,9 +98,9 @@ class TestGambitNode(object):
 
     def test_insert_move_error_player_actions(self):
         "Test to ensure there are actions when inserting with a player"
-        assert_raises(UndefinedOperationError, self.extensive_game.root.insert_move, 
+        assert_raises(UndefinedOperationError, self.extensive_game.root.insert_move,
                         self.extensive_game.players[0])
-        assert_raises(UndefinedOperationError, self.extensive_game.root.insert_move, 
+        assert_raises(UndefinedOperationError, self.extensive_game.root.insert_move,
                         self.extensive_game.players[0], 0)
 
     def test_insert_move_error_player_mismatch(self):
@@ -110,7 +110,7 @@ class TestGambitNode(object):
 
     def test_insert_move_error_infoset_actions(self):
         "Test to ensure there are no actions when inserting with an infoset"
-        assert_raises(UndefinedOperationError, self.extensive_game.root.insert_move, 
+        assert_raises(UndefinedOperationError, self.extensive_game.root.insert_move,
                         self.extensive_game.players[0].infosets[0], 1)
 
     def test_insert_move_error_infoset_mismatch(self):

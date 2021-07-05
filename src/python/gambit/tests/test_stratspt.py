@@ -3,11 +3,12 @@ import fractions
 import nose.tools
 from nose.tools import assert_raises
 from gambit.lib.error import UndefinedOperationError
+import unittest
 
-class TestGambitStrategicRestriction(object):
+class TestGambitStrategicRestriction(unittest.TestCase):
     def setUp(self):
         self.game = gambit.Game.read_game("test_games/mixed_strategy.nfg")
-        
+
         self.profile_double = self.game.mixed_strategy_profile()
         self.profile_rational = self.game.mixed_strategy_profile(True)
         self.restriction = self.profile_double.restriction()
@@ -18,7 +19,7 @@ class TestGambitStrategicRestriction(object):
         self.tree_profile_rational = self.tree_game.mixed_strategy_profile(True)
         self.tree_restriction = self.tree_profile_double.restriction()
 
-        
+
     def tearDown(self):
         del self.game
         del self.tree_game
@@ -28,7 +29,7 @@ class TestGambitStrategicRestriction(object):
         del self.tree_profile_rational
         del self.restriction
         del self.tree_restriction
-            
+
 
     def test_both_restrictions(self):
         "Test to ensure generated restrictions from double and rational-valued\
@@ -105,7 +106,7 @@ class TestGambitStrategicRestriction(object):
         "Test to ensure an error is raised when trying to add a player"\
         "to a restriction"
         self.restriction.players.add("")
-        
+
     @nose.tools.raises(UndefinedOperationError)
     def test_restriction_player_label_error(self):
         "Test to ensure an error is raised when trying to change the label"\

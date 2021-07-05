@@ -3,18 +3,19 @@ import fractions
 import nose.tools
 from nose.tools import assert_raises
 from gambit.lib.error import UndefinedOperationError
+import unittest
 
-class TestGambitStrategySupportProfile(object):
+class TestGambitStrategySupportProfile(unittest.TestCase):
     def setUp(self):
         self.game = gambit.Game.read_game("test_games/mixed_strategy.nfg")
         self.support_profile = self.game.support_profile()
         self.restriction = self.support_profile.restrict()
-        
+
     def tearDown(self):
         del self.game
         del self.support_profile
         del self.restriction
-            
+
 
     def test_num_strategies(self):
         "Ensure the support profile of the full game still has all strategies"

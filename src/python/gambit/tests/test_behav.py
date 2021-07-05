@@ -1,22 +1,23 @@
 from __future__ import print_function
 import gambit
 import fractions
+import unittest
 
-class TestGambitMixedBehavGame(object):
+class TestGambitMixedBehavGame(unittest.TestCase):
     def setUp(self):
         self.game = gambit.Game.read_game("test_games/mixed_behavior_game.efg")
-        
+
         self.profile_double = self.game.mixed_behavior_profile()
         self.profile_rational = self.game.mixed_behavior_profile(True)
-        
+
     def tearDown(self):
         del self.game
         del self.profile_double
         del self.profile_rational
-            
+
 
     def test_payoff(self):
-        "Test to ensure that payoffs are returned correctly"        
+        "Test to ensure that payoffs are returned correctly"
         assert self.profile_double.payoff(self.game.players[0]) == 3.0
         assert self.profile_double.payoff(self.game.players[1]) == 3.0
         assert self.profile_double.payoff(self.game.players[2]) == 3.25
@@ -24,7 +25,7 @@ class TestGambitMixedBehavGame(object):
         assert self.profile_rational.payoff(self.game.players[1]) == fractions.Fraction(3,1)
         assert self.profile_rational.payoff(self.game.players[2]) == fractions.Fraction(13,4)
 
-        
+
     def test_payoff_by_string(self):
         "Test to find payoffs by string values"
         assert self.profile_double.payoff("Player 1") == 3.0
@@ -129,7 +130,7 @@ class TestGambitMixedBehavGame(object):
         assert self.profile_rational["Player 1"] == [[fractions.Fraction("1/2"), fractions.Fraction("1/2")]]
         assert self.profile_rational["Player 2"] == [[fractions.Fraction("1/2"), fractions.Fraction("1/2")]]
         assert self.profile_rational["Player 3"] == [[fractions.Fraction("1/2"), fractions.Fraction("1/2")]]
-        
+
     def test_set_probabilities_action(self):
         "Test to set probabilities"
         self.profile_double[0] = 0.72
@@ -186,13 +187,13 @@ class TestGambitMixedBehavGame(object):
         self.profile_rational["D3"] = fractions.Fraction("97/98")
         assert self.profile_rational["D3"] == fractions.Fraction("97/98")
         print(self.profile_rational)
-        assert self.profile_rational == [fractions.Fraction("2/9"), 
-                                        fractions.Fraction("7/9"), 
-                                        fractions.Fraction("4/13"), 
-                                        fractions.Fraction("9/13"), 
-                                        fractions.Fraction("1/98"), 
+        assert self.profile_rational == [fractions.Fraction("2/9"),
+                                        fractions.Fraction("7/9"),
+                                        fractions.Fraction("4/13"),
+                                        fractions.Fraction("9/13"),
+                                        fractions.Fraction("1/98"),
                                         fractions.Fraction("97/98")]
-    
+
     def test_set_probabilities_infoset(self):
         "Test to set probabilities to an infoset"
         self.profile_double[self.game.players[0]][0] = [0.72, 0.28]
@@ -356,7 +357,7 @@ class TestGambitMixedBehavGame(object):
         assert self.profile_rational.regret("D2") == fractions.Fraction("0/1")
         assert self.profile_rational.regret("U3") == fractions.Fraction(1, 4)
         assert self.profile_rational.regret("D3") == fractions.Fraction(-1, 4)
-        
+
     def test_liap_values(self):
         "Test to retrieve Lyapunov values"
         assert self.profile_double.liap_value() == 0.0625

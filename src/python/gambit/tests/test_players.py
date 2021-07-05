@@ -2,21 +2,22 @@ import gambit
 import warnings
 import fractions
 from nose.tools import assert_raises
+import unittest
 
-class TestGambitPlayers(object):
+class TestGambitPlayers(unittest.TestCase):
     def setUp(self):
         self.strategic_game = gambit.Game.new_table([2,2])
         self.strategic_game.players[0].label = "Alphonse"
         self.strategic_game.players[1].label = "Gaston"
         self.extensive_game = gambit.Game.new_tree()
-    
+
     def tearDown(self):
         del self.strategic_game
-        
+
     def test_initial_player_count(self):
         "Test to ensure 0 initial players"
         assert len(self.strategic_game.players) == 2
-        
+
     def test_game_add_players(self):
         "Test to add player"
         p1 = self.strategic_game.players[0]

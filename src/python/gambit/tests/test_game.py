@@ -3,12 +3,13 @@ import fractions
 import nose.tools
 from nose.tools import assert_raises
 from gambit.lib.error import UndefinedOperationError
+import unittest
 
-class TestGambitGame(object):
+class TestGambitGame(unittest.TestCase):
     def setUp(self):
         self.game = gambit.Game.new_table([2,2])
         self.extensive_game = gambit.Game.read_game("test_games/basic_extensive_game.efg")
-    
+
     def tearDown(self):
         del self.game
         del self.extensive_game
@@ -51,7 +52,7 @@ class TestGambitGame(object):
     def test_game_outcomes_non_tuple(self):
         "To test when attempting to find outcome with a non-tuple-like object"
         assert_raises(TypeError, self.game.__getitem__, 42)
-        
+
     def test_game_outcomes_type_exception(self):
         "To test when attempting to find outcome with invalid input"
         assert_raises(TypeError, self.game.__getitem__, (1.23,1))

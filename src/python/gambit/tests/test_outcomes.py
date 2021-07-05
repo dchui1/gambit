@@ -1,8 +1,9 @@
 import gambit
 from nose.tools import assert_raises
 import warnings
+import unittest
 
-class TestGambitOutcomes(object):
+class TestGambitOutcomes(unittest.TestCase):
     def setUp(self):
         self.game = gambit.Game.new_table([2,2])
         self.game.players[0].label = "joe"
@@ -11,7 +12,7 @@ class TestGambitOutcomes(object):
         self.game.outcomes[0][1] = 2
         self.game.outcomes[1][0] = 3
         self.game.outcomes[1][1] = 4
-    
+
     def tearDown(self):
         del self.game
 
@@ -19,10 +20,10 @@ class TestGambitOutcomes(object):
         "Test to verify outcome labels and indexing"
         self.game.outcomes[0].label = "trial"
         self.game.outcomes[1].label = "trial 2"
-        
+
         assert self.game.outcomes[0].label == "trial"
         assert self.game.outcomes[1].label == "trial 2"
-        
+
     def test_game_add_outcomes(self):
         "Test to verify outcome indexing"
         self.game.outcomes[0].label = "trial"

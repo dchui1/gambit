@@ -1,8 +1,8 @@
 import gambit
 import nose.tools
+import unittest
 
-
-class TestGambitEfgFile(object):
+class TestGambitEfgFile(unittest.TestCase):
     def setUp(self):
         self.file_text = open("../../../../contrib/games/e02.efg").read()
 
@@ -42,7 +42,7 @@ class TestGambitEfgFile(object):
             gambit.Game.parse_game(ft)
         nose.tools.assert_equal(str(e.exception),
                                 "line 4:3: Invalid type of node")
-        
+
     def test_parse_string_removed_player(self):
         ft = self.file_text.replace('"Player 2"', '')
         with nose.tools.assert_raises(IOError) as e:
@@ -80,4 +80,3 @@ class TestGambitNfgFile(object):
             gambit.Game.parse_game(ft)
         nose.tools.assert_equal(str(e.exception),
                                 "line 1:73: Not enough players for number of strategy entries")
-

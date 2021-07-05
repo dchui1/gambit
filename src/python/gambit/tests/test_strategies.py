@@ -1,13 +1,14 @@
 import gambit
 import warnings
 from nose.tools import assert_raises
+import unittest
 
-class TestGambitStrategies(object):
+class TestGambitStrategies(unittest.TestCase):
     def setUp(self):
         self.game = gambit.Game.new_table([2,2])
         self.game.players[0].label = "Alphonse"
         self.game.players[1].label = "Gaston"
-    
+
     def tearDown(self):
         del self.game
 

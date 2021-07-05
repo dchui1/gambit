@@ -1,22 +1,23 @@
 import gambit
 from nose.tools import assert_raises
 import warnings
+import unittest
 
-class TestGambitOutcomes(object):
+class TestGambitOutcomes(unittest.TestCase):
     def setUp(self):
         self.game = gambit.Game.read_game("./test_games/sample_extensive_game.efg")
-    
+
     def tearDown(self):
         del self.game
 
     def test_player1_outcomes(self):
-        assert(self.game[[0,0]][0] == 2)  
+        assert(self.game[[0,0]][0] == 2)
         assert(self.game[[0,1]][0] == 2)
         assert(self.game[[1,0]][0] == 4)
         assert(self.game[[1,1]][0] == 6)
 
     def test_player2_outcomes(self):
-        assert(self.game[[0,0]][1] == 3)  
+        assert(self.game[[0,0]][1] == 3)
         assert(self.game[[0,1]][1] == 3)
         assert(self.game[[1,0]][1] == 5)
         assert(self.game[[1,1]][1] == 7)
