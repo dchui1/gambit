@@ -24,10 +24,9 @@ import gambit.lib.libgambit
 from . import nash
 from . import gte
 
+
 __version__ = gambit.lib.libgambit.__version__
 Rational = gambit.lib.libgambit.Rational
 Decimal = gambit.lib.libgambit.Decimal
 
 class Game(gambit.lib.libgambit.Game): pass
-
-

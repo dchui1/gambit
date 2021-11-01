@@ -8,3 +8,11 @@ http://www.gambit-project.org
 Instructions on installing Gambit can be found in the
 file INSTALL in this directory.
 
+
+
+
+In the gambit directory, ensure you’re in the compile-python3 branch:
+git checkout compile-python3
+Follow the instructions in the INSTALL file to build and run the configure.sh script
+From the src/python directory, install the Python interface to gambit:
+python3 setup.py install

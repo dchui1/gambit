@@ -25,7 +25,7 @@ A set of utilities for computing and analyzing quantal response equilbria
 
 import math
 import numpy
-import pctrace
+from . import pctrace
 
 from gambit.profiles import Solution
 
@@ -49,7 +49,7 @@ def sym_compute_lhs(game, point):
                        lam * (profile.strategy_value(st)-
                               profile.strategy_value(0)))
     return lhs
-            
+
 
 def sym_compute_jac(game, point):
     """
@@ -86,7 +86,7 @@ def sym_compute_jac(game, point):
                              profile.strategy_value(st)
 
     return matrix
-            
+
 
 def printer(game, point):
     profile = game.mixed_strategy_profile(point=[math.exp(x) for x in point[:-1]])
@@ -116,7 +116,7 @@ class StrategicQREPathTracer(object):
     def __init__(self):
         self.h_start = 0.03
         self.max_decel = 1.1
-    
+
     def trace_strategic_path(self, game, max_lambda=1000000.0, callback=None):
         points = [ ]
         def on_step(game, points, p, callback):
@@ -228,7 +228,7 @@ class StrategicQREPathTracer(object):
             """
             return f(LogitQRE(x[-1],
                               game.mixed_strategy_profile(point=[math.exp(z) for z in x[:-1]])))
-            
+
         if game.is_symmetric:
             p = game.mixed_strategy_profile()
 
@@ -244,10 +244,10 @@ class StrategicQREPathTracer(object):
                             game.mixed_strategy_profile(point=[math.exp(x) for x in point[:-1]]))
         else:
             raise NotImplementedError
-        
 
-from nash import ExternalSolver
-    
+
+from .nash import ExternalSolver
+
 class ExternalStrategicQREPathTracer(ExternalSolver):
     """
     Algorithm class to manage calls to external gambit-logit solver
@@ -263,15 +263,14 @@ class ExternalStrategicQREPathTracer(ExternalSolver):
                 profile[i] = float(p)
             profiles.append(LogitQRE(float(entries[0]), profile))
         return profiles
-        
+
     def compute_at_lambda(self, game, lam):
         command_line = "gambit-logit -d 20 -l %f" % lam
+
         line = list(self.launch(command_line, game))[-1]
-        entries = line.strip().split(",")
+        entries = line.decode().strip().split(",")
+
         profile = game.mixed_strategy_profile()
         for (i, p) in enumerate(entries[1:]):
             profile[i] = float(p)
         return [ LogitQRE(float(entries[0]), profile) ]
-        
-
-

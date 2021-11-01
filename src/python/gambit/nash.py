@@ -34,8 +34,8 @@ class NashSolution(Solution):
     def __repr__(self):
         return "<NashProfile for '%s': %s>" % (self._profile.game.title,
                                                self._profile)
-    
-    
+
+
 class ExternalSolver(object):
     """
     Base class for managing calls to external programs.
@@ -51,7 +51,9 @@ class ExternalSolver(object):
                              stdin=subprocess.PIPE, stdout=subprocess.PIPE,
                              close_fds=True if sys.platform != "win32" else False)
         child_stdin, child_stdout = p.stdin, p.stdout
-        child_stdin.write(game.write(format='native'))
+        gameBytes = game.write(format='native')
+
+        child_stdin.write(gameBytes)
         # Need to close, or at least flush, stdin of the child, or else
         # processing won't begin...
         child_stdin.close()
@@ -158,7 +160,7 @@ class ExternalSimpdivSolver(ExternalSolver):
         command_line = "gambit-simpdiv"
         return self._parse_output(self.launch(command_line, game),
                                   game, rational=True)
-    
+
 class ExternalGlobalNewtonSolver(ExternalSolver):
     """
     Algorithm class to manage calls to external gambit-gnm solver
@@ -272,7 +274,7 @@ def lcp_solve(game, rational=True, use_strategic=False, external=False,
             alg = gambit.lib.libgambit.LCPStrategySolverRational(stop_after, max_depth)
         else:
             alg = gambit.lib.libgambit.LCPStrategySolverDouble(stop_after, max_depth)
-    else:        
+    else:
         if rational:
             alg = gambit.lib.libgambit.LCPBehaviorSolverRational(stop_after, max_depth)
         else:
@@ -291,7 +293,7 @@ def lp_solve(game, rational=True, use_strategic=False, external=False):
             alg = gambit.lib.libgambit.LPStrategySolverRational()
         else:
             alg = gambit.lib.libgambit.LPStrategySolverDouble()
-    else:        
+    else:
         if rational:
             alg = gambit.lib.libgambit.LPBehaviorSolverRational()
         else:
@@ -328,4 +330,3 @@ def gnm_solve(game, external=False):
 logit_estimate = gambit.lib.libgambit.logit_estimate
 logit_atlambda = gambit.lib.libgambit.logit_atlambda
 logit_principal_branch = gambit.lib.libgambit.logit_principal_branch
-

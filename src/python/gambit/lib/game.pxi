@@ -152,7 +152,7 @@ cdef class Game(object):
             for pl in range(len(g.players)):
                 g[profile][pl] = arrays[pl][profile]
         return g
-        
+
 
     @classmethod
     def read_game(cls, fn):
@@ -161,7 +161,7 @@ cdef class Game(object):
         try:
             g.game = ReadGame(fn.encode('ascii'))
         except IOError as e:
-            raise IOError("Unable to read game from file '%s': %s" % 
+            raise IOError("Unable to read game from file '%s': %s" %
                         (fn, e))
         return g
 
@@ -170,13 +170,13 @@ cdef class Game(object):
         cdef Game g
         g = cls()
         g.game = ParseGame(s.encode('ascii'))
-        return g        
+        return g
 
     def __str__(self):
         return "<Game '%s'>" % self.title
 
     def __repr__(self):
-        return self.write()
+        return self.write().decode()
 
     def __richcmp__(Game self, other, whichop):
         if isinstance(other, Game):
@@ -267,7 +267,7 @@ cdef class Game(object):
                 return n
             raise UndefinedOperationError("Operation only defined for "\
                                            "games with a tree representation")
-                         
+
     property is_const_sum:
         def __get__(self):
             return self.game.deref().IsConstSum()
@@ -289,8 +289,8 @@ cdef class Game(object):
         cdef Outcome outcome
         cdef TreeGameOutcome tree_outcome
         psp = new c_PureStrategyProfile(self.game.deref().NewPureStrategyProfile())
-        
-        
+
+
         for (pl, st) in enumerate(args):
             psp.deref().SetStrategy(self.game.deref().GetPlayer(pl+1).deref().GetStrategy(st+1))
 
@@ -306,7 +306,7 @@ cdef class Game(object):
             return outcome
 
     # As of Cython 0.11.2, cython does not support the * notation for the argument
-    # to __getitem__, which is required for multidimensional slicing to work. 
+    # to __getitem__, which is required for multidimensional slicing to work.
     # We work around this by providing a shim.
     def __getitem__(self, i):
         try:
@@ -365,7 +365,7 @@ cdef class Game(object):
         else:
             raise UndefinedOperationError("Game must have a tree representation"\
                                       " to create a mixed behavior profile")
- 
+
     def support_profile(self):
         return StrategySupportProfile(list(self.strategies), self)
 
@@ -382,5 +382,5 @@ cdef class Game(object):
         if format == 'gte':
             return gambit.gte.write_game(self)
         else:
-            s = format.encode('ascii')
-            return str(WriteGame(self.game, s).c_str())
+            s = format.encode('utf-8')
+            return WriteGame(self.game, s).c_str()
